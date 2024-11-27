@@ -24,9 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv()
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
+DEBUG = os.environ.get('DEBUG', 'True').lower() == 'true'
 
-DEBUG = os.environ.get('DEBUG') == 'False'
-ALLOWED_HOSTS = ['.vercel.app', 'localhost', '127.0.0.1']
+# DEBUG = os.environ.get('DEBUG') == 'False'
+ALLOWED_HOSTS = ['.vercel.app', 'localhost', '127.0.0.1','*']
 
 
 # Application definition
