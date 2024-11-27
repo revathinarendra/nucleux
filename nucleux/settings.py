@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv()
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
-DEBUG = os.environ.get('DEBUG', 'True').lower() == 'true'
+#DEBUG = os.environ.get('DEBUG', 'True').lower() == 'true'
 
-# DEBUG = os.environ.get('DEBUG') == 'False'
+DEBUG = os.environ.get('DEBUG') == 'False'
 ALLOWED_HOSTS = ['.vercel.app', 'localhost', '127.0.0.1','*']
 
 
@@ -172,7 +172,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'public/static')
 
-VERCEL_PUBLIC_DIR = os.path.join(BASE_DIR, 'public')
+#VERCEL_PUBLIC_DIR = os.path.join(BASE_DIR, 'public')
 MEDIA_URL = '/media/'
 AUTHENTICATION_BACKENDS = [
     'backends.custom_authentication_backend.CustomEmailBackend',  # Custom authentication backend
