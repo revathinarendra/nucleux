@@ -122,13 +122,24 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# REST_FRAMEWORK = {
+#     'EXCEPTION_HANDLER': 'utils.custom_exception_handler.custom_exception_handler',
+#     'DEFAULT_AUTHENTICATION_CLASSES': (
+#         'rest_framework_simplejwt.authentication.JWTAuthentication',
+#         'rest_framework.renderers.JSONRenderer',
+#     ),
+# }
 REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'utils.custom_exception_handler.custom_exception_handler',
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-        'rest_framework.renderers.JSONRenderer',
+    ),
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',  # Keeps JSON rendering for API responses
+        'rest_framework.renderers.BrowsableAPIRenderer',  # Enables the styled, browsable API
     ),
 }
+
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=30),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=60),
