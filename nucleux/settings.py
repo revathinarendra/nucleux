@@ -180,7 +180,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 # settings.py
 #FRONTEND_URL = 'http://localhost:3000'  # Or your frontend URL
-FRONTEND_URL = 'https://wikitubeio.vercel.app/'
+FRONTEND_URL = 'https://nucleux.vercel.app/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 EMAIL_BACKEND = "backends.custom_email_backend.CustomEmailBackend"
 EMAIL_HOST = os.environ.get("EMAIL_HOST", "smtp.gmail.com")

@@ -1,8 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from .models import Account, UserProfile
+from .models import Account
 from django.contrib.auth.password_validation import validate_password
-from rest_framework import serializers
 from .models import  UserProfile, Referral, Objectives, University, Profession
 from django.utils.http import  urlsafe_base64_decode
 from django.utils.encoding import  force_str
@@ -143,3 +142,52 @@ class LoginSerializer(serializers.Serializer):
                 raise serializers.ValidationError('No user found with this email address.')
 
         return data
+class UserProfileEditSerializer(serializers.ModelSerializer):
+    user = SignUpSerializer(required=False) 
+ 
+    # Fields from the Account model
+    first_name = serializers.CharField(required=False)
+    last_name = serializers.CharField(required=False)
+    email = serializers.EmailField(required=False)
+    #phone_number = serializers.CharField(required=False)
+    referral = serializers.PrimaryKeyRelatedField(queryset=Referral.objects.all(), required=False)
+    objectives = serializers.PrimaryKeyRelatedField(queryset=Objectives.objects.all(), required=False)
+    university = serializers.PrimaryKeyRelatedField(queryset=University.objects.all(), required=False)
+    profession = serializers.PrimaryKeyRelatedField(queryset=Profession.objects.all(), required=False)
+    expected_graduation_date = serializers.DateField(required=False)
+    current_area_of_focus = serializers.PrimaryKeyRelatedField(queryset=Objectives.objects.all(), required=False)
+
+    class Meta:
+        model = UserProfile
+        fields = [
+            "first_name", "last_name", "email",   "user",
+            "address_line_1", "address_line_2", "profile_picture", "city", "state", "country",  # UserProfile fields
+            "referral", "objectives", "university", "profession", "expected_graduation_date", "current_area_of_focus"
+        ]
+
+    def update(self, instance, validated_data):
+        # Update UserProfile fields
+        userprofile_fields = [
+            "address_line_1", "address_line_2", "profile_picture", "city", "state", "country"
+        ]
+        for field in userprofile_fields:
+            if field in validated_data:
+                setattr(instance, field, validated_data[field])
+
+        # Update Account fields
+        account_fields = [
+            "first_name", "last_name", "email", "phone_number", "referral", "objectives",
+            "university", "profession", "expected_graduation_date", "current_area_of_focus"
+        ]
+        account = instance.user  # Access the related Account object
+        for field in account_fields:
+            if field in validated_data:
+                setattr(account, field, validated_data[field])
+
+        # Save changes
+        instance.save()
+        account.save()
+        return instance
+
+    
+

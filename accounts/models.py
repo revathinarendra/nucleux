@@ -51,7 +51,7 @@ class Account(AbstractBaseUser):
 
     username = models.CharField(max_length=100, unique=True,blank=True)
     email = models.EmailField(max_length=100, unique=True)
-    phone_number = models.CharField(max_length=15)
+    phone_number = models.CharField(max_length=15,null=True)
     referral = models.ForeignKey('Referral', on_delete=models.SET_NULL, null=True, blank=True)
     profession = models.ForeignKey('Profession', on_delete=models.SET_NULL, null=True, blank=True)
     university = models.ForeignKey('University', on_delete=models.SET_NULL, null=True, blank=True)
@@ -104,7 +104,7 @@ class Account(AbstractBaseUser):
 
 
 class UserProfile(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,related_name="userprofile")
     address_line_1 = models.CharField(blank=True, max_length=100)
     address_line_2 = models.CharField(blank=True, max_length=100)
     phone_number = models.CharField(max_length=15)

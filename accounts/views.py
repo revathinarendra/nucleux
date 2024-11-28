@@ -5,7 +5,7 @@ from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.conf import settings
-from .serializers import LoginSerializer, PasswordResetRequestSerializer, PasswordResetSerializer, SignUpSerializer, UserSerializer
+from .serializers import LoginSerializer, PasswordResetRequestSerializer, PasswordResetSerializer, SignUpSerializer, UserProfileEditSerializer, UserSerializer
 from .models import Account, EmailVerificationToken  
 from django.contrib.sites.shortcuts import get_current_site
 from rest_framework.decorators import api_view, permission_classes
@@ -14,18 +14,10 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.hashers import make_password
-from rest_framework import  permissions
 from django.contrib.auth import authenticate, get_user_model
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework.response import Response
-from rest_framework import status
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
 
-class HelloWorldView(APIView):
-    def get(self, request):
-        return Response({"message": "Hello, World!"}, status=status.HTTP_200_OK)
+# Register Api endpoint view
 
 class SignupView(APIView):
     permission_classes = [permissions.AllowAny]
@@ -111,7 +103,7 @@ class VerifyEmailView(APIView):
         token_obj.delete()
 
         # Redirect to frontend or return a response
-        return redirect(settings.FRONTEND_URL)  # Adjust this URL as per your frontend setup
+        return redirect(settings.FRONTEND_URL)  
 
 
 @api_view(['POST'])
@@ -142,36 +134,13 @@ def login_view(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# Get Current Logged-in User (Protected Route)
+# Get Current Logged-in User 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def currentUser(request):
     user = UserSerializer(request.user)
     return Response(user.data)
 
-# Update User Profile (Protected Route)
-@api_view(['PUT'])
-@permission_classes([IsAuthenticated])
-def updateUser(request):
-    user = request.user
-    data = request.data
-
-    user.first_name = data.get('first_name', user.first_name)
-    user.last_name = data.get('last_name', user.last_name)
-    user.email = data.get('email', user.email)
-
-    if data.get('password'):
-        user.password = make_password(data['password'])
-
-    user.save()
-
-    user_profile = user.userprofile
-    user_profile.date_of_birth = data.get('date_of_birth', user_profile.date_of_birth)
-    user_profile.gender = data.get('gender', user_profile.gender)
-    user_profile.save()
-
-    serializer = UserSerializer(user)
-    return Response(serializer.data)
 
 # Password Reset Request View
 @api_view(['POST'])
@@ -211,3 +180,15 @@ def password_reset_confirm(request, uidb64, token):
         serializer.save()
         return Response({'message': 'Password reset successful'}, status=status.HTTP_200_OK)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserProfileEditView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request):
+        profile = request.user.userprofile  # Get the user's profile
+        serializer = UserProfileEditSerializer(profile, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
