@@ -17,71 +17,71 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, get_user_model
 from rest_framework_simplejwt.tokens import RefreshToken
 
-# Register Api endpoint view
+# # Register Api endpoint view
 
-class SignupView(APIView):
-    permission_classes = [permissions.AllowAny]
+# class SignupView(APIView):
+#     permission_classes = [permissions.AllowAny]
 
-    def post(self, request):
-        serializer = SignUpSerializer(data=request.data)
-        if serializer.is_valid():
-            data = serializer.validated_data
+#     def post(self, request):
+#         serializer = SignUpSerializer(data=request.data)
+#         if serializer.is_valid():
+#             data = serializer.validated_data
 
-            # Check if a user with this email already exists
-            User = get_user_model()
-            if User.objects.filter(email=data['email']).exists():
-                return Response({'error': 'User already exists'}, status=status.HTTP_400_BAD_REQUEST)
+#             # Check if a user with this email already exists
+#             User = get_user_model()
+#             if User.objects.filter(email=data['email']).exists():
+#                 return Response({'error': 'User already exists'}, status=status.HTTP_400_BAD_REQUEST)
 
-            # Save the user but set `is_active` to False
-            user = serializer.save(is_active=False)
+#             # Save the user but set `is_active` to False
+#             user = serializer.save(is_active=False)
 
-            # Generate an email verification token
-            token = EmailVerificationToken.objects.create(user=user)
-
-            # Create a verification link
-            current_site = get_current_site(request).domain
-            verification_link = f"http://{current_site}{reverse('verify-email', kwargs={'token': token.token})}"
-
-            # Send verification email
-            send_mail(
-                subject='Verify your email address',
-                message=f'Please click the link to verify your email: {verification_link}',
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[user.email],
-                fail_silently=False,
-            )
-
-            return Response(
-                {"message": "User registered. Please verify your email."},
-                status=status.HTTP_201_CREATED,
-            )
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-# Registration View
-# User = get_user_model()
-# @api_view(['POST'])
-# def register(request):
-#     data = request.data
-#     user_serializer = SignUpSerializer(data=data)
-
-#     if user_serializer.is_valid():
-#         if not User.objects.filter(username=data['email']).exists():
-#             user = user_serializer.save()
+#             # Generate an email verification token
 #             token = EmailVerificationToken.objects.create(user=user)
+
+#             # Create a verification link
 #             current_site = get_current_site(request).domain
 #             verification_link = f"http://{current_site}{reverse('verify-email', kwargs={'token': token.token})}"
+
+#             # Send verification email
 #             send_mail(
-#                 'Verify your email address',
-#                 f'Please click the link to verify your email: {verification_link}',
-#                 settings.DEFAULT_FROM_EMAIL,
-#                 [user.email],
+#                 subject='Verify your email address',
+#                 message=f'Please click the link to verify your email: {verification_link}',
+#                 from_email=settings.DEFAULT_FROM_EMAIL,
+#                 recipient_list=[user.email],
 #                 fail_silently=False,
 #             )
-#             return Response({'message': 'User registered. Please verify your email.'}, status=status.HTTP_201_CREATED)
-#         else:
-#             return Response({'error': 'User already exists'}, status=status.HTTP_400_BAD_REQUEST)
-#     else:
-#         return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#             return Response(
+#                 {"message": "User registered. Please verify your email."},
+#                 status=status.HTTP_201_CREATED,
+#             )
+
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#Registration View
+User = get_user_model()
+@api_view(['POST'])
+def register(request):
+    data = request.data
+    user_serializer = SignUpSerializer(data=data)
+
+    if user_serializer.is_valid():
+        if not User.objects.filter(username=data['email']).exists():
+            user = user_serializer.save()
+            token = EmailVerificationToken.objects.create(user=user)
+            current_site = get_current_site(request).domain
+            verification_link = f"http://{current_site}{reverse('verify-email', kwargs={'token': token.token})}"
+            send_mail(
+                'Verify your email address',
+                f'Please click the link to verify your email: {verification_link}',
+                settings.DEFAULT_FROM_EMAIL,
+                [user.email],
+                fail_silently=False,
+            )
+            return Response({'message': 'User registered. Please verify your email.'}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({'error': 'User already exists'}, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class VerifyEmailView(APIView):

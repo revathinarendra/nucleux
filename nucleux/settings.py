@@ -150,10 +150,17 @@ SIMPLE_JWT = {
     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
 }
 CORS_ALLOWED_ORIGINS = [
-    'https://nucleux-puce.vercel.app/',
-    'https://nucleux.vercel.app/',
+    'https://nucleux-puce.vercel.app',
+    'https://nucleux.vercel.app',
     'http://localhost:3000',
     'http://127.0.0.1:3000'
+]
+CORS_ALLOW_METHODS = [
+    'GET',
+    'POST',
+    'PUT',
+    'DELETE',
+    'OPTIONS',  # Include OPTIONS for preflight requests
 ]
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
