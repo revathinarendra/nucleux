@@ -191,3 +191,47 @@ class UserProfileEditSerializer(serializers.ModelSerializer):
 
     
 
+
+
+# Serializer for Referral
+class ReferralSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Referral
+        fields = '__all__'
+
+# Serializer for Profession
+class ProfessionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profession
+        fields = '__all__'
+
+# Serializer for Objectives
+class ObjectivesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Objectives
+        fields = '__all__'
+
+# Serializer for University with custom nested fields
+class UniversitySerializer(serializers.ModelSerializer):
+    referrals = serializers.SerializerMethodField()
+    professions = serializers.SerializerMethodField()
+    objectives = serializers.SerializerMethodField()
+
+    class Meta:
+        model = University
+        fields = ['id', 'country_name', 'university_name', 'referrals', 'professions', 'objectives']
+
+    # Custom method to include referrals
+    def get_referrals(self, obj):
+        referrals = Referral.objects.all()
+        return ReferralSerializer(referrals, many=True).data
+
+    # Custom method to include professions
+    def get_professions(self, obj):
+        professions = Profession.objects.all()
+        return ProfessionSerializer(professions, many=True).data
+
+    # Custom method to include objectives
+    def get_objectives(self, obj):
+        objectives = Objectives.objects.all()
+        return ObjectivesSerializer(objectives, many=True).data

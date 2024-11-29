@@ -55,7 +55,7 @@ class Account(AbstractBaseUser):
     referral = models.ForeignKey('Referral', on_delete=models.SET_NULL, null=True, blank=True)
     profession = models.ForeignKey('Profession', on_delete=models.SET_NULL, null=True, blank=True)
     university = models.ForeignKey('University', on_delete=models.SET_NULL, null=True, blank=True)
-    expected_graduation_date = models.DateField(null=True, blank=True)
+    expected_graduation_date = models.CharField(null=True, blank=True)
     current_area_of_focus = models.ForeignKey(
         'Objectives', 
         on_delete=models.SET_NULL, 
