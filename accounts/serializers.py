@@ -161,14 +161,14 @@ class UserProfileEditSerializer(serializers.ModelSerializer):
         model = UserProfile
         fields = [
             "first_name", "last_name", "email",   "user",
-            "address_line_1", "address_line_2", "profile_picture", "city", "state", "country",  # UserProfile fields
+             "profile_picture",  "country",  # UserProfile fields
             "referral", "objectives", "university", "profession", "expected_graduation_date", "current_area_of_focus"
         ]
 
     def update(self, instance, validated_data):
         # Update UserProfile fields
         userprofile_fields = [
-            "address_line_1", "address_line_2", "profile_picture", "city", "state", "country"
+             "profile_picture", "city", "state", "country"
         ]
         for field in userprofile_fields:
             if field in validated_data:
