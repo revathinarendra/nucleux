@@ -63,8 +63,8 @@ class SignUpSerializer(serializers.ModelSerializer):
         )
 
         # Create the associated UserProfile
-        UserProfile.objects.create(
-            user=user,
+        # UserProfile.objects.create(
+        #     user=user,
             # date_of_birth=date_of_birth,
             # gender=gender,
             # referral=referral,
@@ -73,7 +73,7 @@ class SignUpSerializer(serializers.ModelSerializer):
             # profession=profession,
             # expected_graduation_date=validated_data.get('expected_graduation_date', None),
             # current_area_of_focus=validated_data.get('current_area_of_focus', None),
-        )
+        # )
 
         return user
 
