@@ -13,12 +13,10 @@ from rest_framework.permissions import IsAuthenticated
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
-from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, get_user_model
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.viewsets import ViewSet
-from .models import University
-from .serializers import UniversitySerializer
+from .serializers import UniversityDataSerializer
 
 
 
@@ -178,12 +176,16 @@ class UserProfileEditView(APIView):
 
 
 
+
 class UniversityViewSet(ViewSet):
     def list(self, request):
-        """
-        Handle GET requests to retrieve all universities along with
-        unrelated data (referrals, professions, objectives).
-        """
-        queryset = University.objects.all()
-        serializer = UniversitySerializer(queryset, many=True)
+        # Create a single point of data aggregation
+        data = {
+            "universities": None,  # Placeholder for universities
+            "referrals": None,     # Placeholder for referrals
+            "professions": None,   # Placeholder for professions
+            "objectives": None     # Placeholder for objectives
+        }
+        serializer = UniversityDataSerializer(data=data)
+        serializer.is_valid(raise_exception=True)
         return Response(serializer.data)
