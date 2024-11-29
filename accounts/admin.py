@@ -33,7 +33,7 @@ class UserProfileAdmin(admin.ModelAdmin):
         return "No Image"
     
     thumbnail.short_description = "Profile Picture"
-    list_display = ("thumbnail", "user", "city", "state", "country")
+    list_display = ("thumbnail", "user",  "country")
 
 
 admin.site.register(Account, AccountAdmin)

@@ -105,13 +105,13 @@ class Account(AbstractBaseUser):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,related_name="userprofile")
-    address_line_1 = models.CharField(blank=True,null=True, max_length=100)
-    address_line_2 = models.CharField(blank=True,null=True ,max_length=100)
-    phone_number = models.CharField(null=True ,blank=True,max_length=15)
+    #address_line_1 = models.CharField(blank=True,null=True, max_length=100)
+    #address_line_2 = models.CharField(blank=True,null=True ,max_length=100)
+    #phone_number = models.CharField(null=True ,blank=True,max_length=15)
     profile_picture = models.ImageField(upload_to="userprofile", blank=True)
-    city = models.CharField(blank=True, null=True ,max_length=20)
-    state = models.CharField(blank=True, null=True ,max_length=20)
-    country = models.CharField(blank=True, null=True ,max_length=20)
+    #city = models.CharField(blank=True, null=True ,max_length=20)
+    #state = models.CharField(blank=True,max_length=20)
+    country = models.CharField(blank=True,default="India",max_length=20)
 
     def __str__(self):
         return self.user.first_name
