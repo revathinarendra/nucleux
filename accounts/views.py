@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.conf import settings
 from .serializers import LoginSerializer, PasswordResetRequestSerializer, PasswordResetSerializer, SignUpSerializer, UserProfileEditSerializer, UserSerializer
-from .models import Account, EmailVerificationToken  
+from .models import Account, EmailVerificationToken, UserProfile  
 from django.contrib.sites.shortcuts import get_current_site
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -167,7 +167,8 @@ class UserProfileEditView(APIView):
     permission_classes = [IsAuthenticated]
 
     def put(self, request):
-        profile = request.user.userprofile  # Get the user's profile
+        #profile = request.user.userprofile  # Get the user's profile
+        profile, created = UserProfile.objects.get_or_create(user=request.user)
         serializer = UserProfileEditSerializer(profile, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
