@@ -3,11 +3,18 @@ from .models import LayerA, LayerB, LayerC, LayerD, LayerE
 from .serializers import LayerASerializer, LayerBSerializer, LayerCSerializer, LayerDSerializer, LayerESerializer
 
 
+
 class LayerAListView(generics.ListAPIView):
-    queryset = LayerA.objects.all().select_related(
-        'layer_bs__layer_cs__layer_ds__layer_es'
+    queryset = LayerA.objects.all().prefetch_related(
+        'layer_bs__layer_cs__layer_ds__layer_es'  # Use prefetch_related for reverse relationships
     )
     serializer_class = LayerASerializer
+
+# class LayerAListView(generics.ListAPIView):
+#     queryset = LayerA.objects.all().select_related(
+#         'layer_bs__layer_cs__layer_ds__layer_es'
+#     )
+#     serializer_class = LayerASerializer
 
 # class LayerAListView(generics.ListAPIView):
 #     queryset = LayerA.objects.all()
