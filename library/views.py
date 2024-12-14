@@ -1,7 +1,8 @@
 from rest_framework import generics
 from .models import LayerA, LayerB, LayerC, LayerD, LayerE
 from .serializers import LayerASerializer, LayerBSerializer, LayerCSerializer, LayerDSerializer, LayerESerializer
-
+from .models import LayerF
+from .serializers import LayerFSerializer
 
 
 class LayerAListView(generics.ListAPIView):
@@ -30,3 +31,12 @@ class LayerDListView(generics.ListAPIView):
 class LayerEListView(generics.ListAPIView):
     queryset = LayerE.objects.all()
     serializer_class = LayerESerializer
+
+
+class LayerFListCreateView(generics.ListCreateAPIView):
+    queryset = LayerF.objects.all()
+    serializer_class = LayerFSerializer
+
+class LayerFDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = LayerF.objects.all()
+    serializer_class = LayerFSerializer

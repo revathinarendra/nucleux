@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
+from ckeditor.fields import RichTextField
 
 class LayerA(models.Model):
     layer_a_name = models.CharField(max_length=200)
@@ -66,3 +67,9 @@ class LayerE(models.Model):
     def __str__(self):
         return self.layer_e_name
 
+class LayerF(models.Model):
+    layer_e_name = models.ForeignKey(LayerE, on_delete=models.CASCADE, related_name='layer_es')
+    layer_f_name = RichTextField()
+
+    def __str__(self):
+        return self.layer_f_name

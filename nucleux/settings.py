@@ -44,6 +44,8 @@ THIRD_PARTY_APPS = [
     'phonenumber_field',
     'rest_framework',
     'corsheaders',
+    'ckeditor',
+    'ckeditor_uploader',
 ]
 OUR_APPS = [
     'accounts',
@@ -124,13 +126,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# REST_FRAMEWORK = {
-#     'EXCEPTION_HANDLER': 'utils.custom_exception_handler.custom_exception_handler',
-#     'DEFAULT_AUTHENTICATION_CLASSES': (
-#         'rest_framework_simplejwt.authentication.JWTAuthentication',
-#         'rest_framework.renderers.JSONRenderer',
-#     ),
-# }
+
 REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'utils.custom_exception_handler.custom_exception_handler',
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -138,7 +134,7 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',  # Keeps JSON rendering for API responses
-        'rest_framework.renderers.BrowsableAPIRenderer',  # Enables the styled, browsable API
+        'rest_framework.renderers.BrowsableAPIRenderer',  
     ),
 }
 
@@ -161,7 +157,7 @@ CORS_ALLOW_METHODS = [
     'POST',
     'PUT',
     'DELETE',
-    'OPTIONS',  # Include OPTIONS for preflight requests
+    'OPTIONS',  
 ]
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
@@ -181,14 +177,18 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'public/static')
 
+CKEDITOR_UPLOAD_PATH = "uploads/" 
 #VERCEL_PUBLIC_DIR = os.path.join(BASE_DIR, 'public')
-MEDIA_URL = '/media/'
+
+
+MEDIA_URL = '/media/' 
+MEDIA_ROOT = 'media/'
 AUTHENTICATION_BACKENDS = [
     'backends.custom_authentication_backend.CustomEmailBackend',  # Custom authentication backend
     'django.contrib.auth.backends.ModelBackend',  # Keep the default backend
 ]
-# settings.py
-#FRONTEND_URL = 'http://localhost:3000'  # Or your frontend URL
+
+#FRONTEND_URL = 'http://localhost:3000'  
 FRONTEND_URL = 'https://nucleux.vercel.app/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 EMAIL_BACKEND = "backends.custom_email_backend.CustomEmailBackend"
