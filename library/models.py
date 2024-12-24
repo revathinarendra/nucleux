@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.text import slugify
 from ckeditor.fields import RichTextField
+import json
 
 class LayerA(models.Model):
     layer_a_name = models.CharField(max_length=200)
@@ -71,6 +72,16 @@ class LayerF(models.Model):
     layer_e_name = models.ForeignKey(LayerE, on_delete=models.CASCADE, related_name='layer_es')
     layer_f_name = RichTextField()
     layer_f_note = models.TextField(blank=True)
+
+    def set_layer_f_note_json(self, data):
+        """Save JSON data to layer_f_note."""
+        self.layer_f_note = json.dumps(data)
+
+    def get_layer_f_note_json(self):
+        """Retrieve JSON data from layer_f_note."""
+        if self.layer_f_note:
+            return json.loads(self.layer_f_note)
+        return None
 
     def __str__(self):
         return self.layer_f_name
