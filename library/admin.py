@@ -42,7 +42,7 @@ class LayerFAdminForm(forms.ModelForm):
 
 class LayerFAdmin(admin.ModelAdmin):
     form = LayerFAdminForm
-    list_display = ('get_layer_e_name', 'layer_f_name')
+    list_display = ('get_layer_e_name', 'layer_f_name','layer_f_note')
 
     def get_layer_e_name(self, obj):
         return obj.layer_e_name.layer_e_name 

@@ -70,6 +70,7 @@ class LayerE(models.Model):
 class LayerF(models.Model):
     layer_e_name = models.ForeignKey(LayerE, on_delete=models.CASCADE, related_name='layer_es')
     layer_f_name = RichTextField()
+    layer_f_note = models.TextField(blank=True)
 
     def __str__(self):
         return self.layer_f_name

@@ -40,4 +40,4 @@ class LayerASerializer(serializers.ModelSerializer):
 class LayerFSerializer(serializers.ModelSerializer):
     class Meta:
         model = LayerF
-        fields = ['id', 'layer_e_name', 'layer_f_name']
+        fields = ['id', 'layer_e_name', 'layer_f_name','layer_f_note']
