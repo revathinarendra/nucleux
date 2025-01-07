@@ -46,10 +46,7 @@ class LayerD(models.Model):
     layer_d_name = models.TextField()
     slug = models.SlugField(unique=True, blank=True, max_length=200)
 
-    # def save(self, *args, **kwargs):
-    #     if not self.slug:
-    #         self.slug = slugify(self.layer_d_name)
-    #     super().save(*args, **kwargs)
+    
     def save(self, *args, **kwargs):
         if not self.slug:
             full_slug = slugify(self.layer_d_name)
@@ -73,15 +70,7 @@ class LayerF(models.Model):
     layer_f_name = RichTextField()
     layer_f_note = models.TextField(blank=True)
 
-    def set_layer_f_note_json(self, data):
-        """Save JSON data to layer_f_note."""
-        self.layer_f_note = json.dumps(data)
-
-    def get_layer_f_note_json(self):
-        """Retrieve JSON data from layer_f_note."""
-        if self.layer_f_note:
-            return json.loads(self.layer_f_note)
-        return None
+    
 
     def __str__(self):
         return self.layer_f_name
